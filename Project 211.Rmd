@@ -64,7 +64,6 @@ plot <- plot_ly(avg_hours, x = ~Weekday) %>%
     barmode = "group"
   )
 
-# Display the plot
 plot
 
 ```
