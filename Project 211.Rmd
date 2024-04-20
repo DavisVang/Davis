@@ -1,0 +1,83 @@
+---
+title: "Data 211 Project"
+author: "Davis Vang"
+date: "2024-04-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#libraries 
+```{r}
+library(plotly)
+library(readxl)
+```
+
+```{r}
+Data_211_project <- read_excel("C:/Users/Davis/Downloads/Data 211 project.xlsx", col_types = c("date", "numeric", "numeric", "numeric", "numeric"))
+
+plot <- plot_ly(Data_211_project, x = ~Date) %>% # We set the x value to the dates 
+  add_lines(y = ~`Sleep(hours)`, name = "Sleep Hours") %>% # The y argument specifies the values for the y-axis which goes the same for other lines 
+  add_lines(y = ~`Gaming(hours)`, name = "Gaming Hours") %>% 
+  add_lines(y = ~`Study(hours)`, name = "Study Hours") %>%
+  add_lines(y = ~`Gym(Hours)`, name = "Gym Hours") %>%
+  layout(title = "Types of Activities over Dates",
+         xaxis = list(title = "Date"),
+         yaxis = list(title = "Hours"))
+
+
+plot
+# This would be a line graph resembling how many hours I spend each day in my acivities. 
+
+
+```
+```{r}
+Data_211_project <- read_excel("C:/Users/Davis/Downloads/Data 211 project.xlsx")
+
+Data_211_project$Weekday <- ifelse(weekdays(Data_211_project$Date) %in% c("Saturday", "Sunday"), 0, 1) #we create a ifelse statement so that we can determine if the data is on the weekend or not with 0 or 1. 
+
+avg_hours <- Data_211_project %>%
+  group_by(Weekday) %>%
+  summarize(
+    Avg_Sleep = mean(`Sleep(hours)`),
+    Avg_Gaming = mean(`Gaming(hours)`),
+    Avg_Study = mean(`Study(hours)`),
+    Avg_Gym = mean(`Gym(Hours)`)
+  )
+
+plot <- plot_ly(avg_hours, x = ~Weekday) %>%
+  add_bars(y = ~Avg_Sleep, name = "Sleep", 
+           marker = list(color = "blue")) %>%
+  add_bars(y = ~Avg_Gaming, name = "Gaming", 
+           marker = list(color = "orange")) %>%
+  add_bars(y = ~Avg_Study, name = "Study", 
+           marker = list(color = "green")) %>%
+  add_bars(y = ~Avg_Gym, name = "Gym",
+           marker = list(color = "red")) %>%
+  layout(
+    title = "Average Hours (Weekdays vs. Weekends)",
+    xaxis = list(title = "Day", tickvals  = c(0, 1), 
+                 ticktext = c("Weekend", "Weekday")), #we set the variables tickvals  and ticktext to equal if its either a weekend or weekday.
+    yaxis = list(title = "Average Hours"),
+    barmode = "group"
+  )
+
+# Display the plot
+plot
+
+```
+
+$H_0:P=0.5$ vs $H_0:P>0.5$
+```{r}
+t_test_result <- t.test(Data_211_project$`Sleep(hours)` ~ Data_211_project$Weekday, alternative = "greater")
+
+t_test_result
+
+```
+#Result 
+```{r}
+#The null hypothesis states that there is no difference but with the alternative hypothesis saying we get more sleep on the weekday than the weekend. Which it states that the p-value = 0.6721, so we would fail to reject the null hypothesis and that There is not enough evidence to conclude that the average hours of sleep on weekends are significantly greater than the average hours of sleep on weekdays at the 5% significance level. Therefore we do not have sufficient evidence to support the claim that I sleep more on weekends compared to weekdays.
+```
+
