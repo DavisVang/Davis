@@ -68,7 +68,7 @@ plot
 
 ```
 
-$H_0:P=0.5$ vs $H_0:P>0.5$
+$H_0: \mu_{weekday} = \mu_{weekend}$ vs $H_1: \mu_{weekend} > \mu_{weekday}$
 ```{r}
 t_test_result <- t.test(Data_211_project$`Sleep(hours)` ~ Data_211_project$Weekday, alternative = "greater")
 
@@ -77,6 +77,6 @@ t_test_result
 ```
 #Result 
 ```{r}
-#The null hypothesis states that there is no difference but with the alternative hypothesis saying we get more sleep on the weekday than the weekend. Which it states that the p-value = 0.6721, so we would fail to reject the null hypothesis and that There is not enough evidence to conclude that the average hours of sleep on weekends are significantly greater than the average hours of sleep on weekdays at the 5% significance level. Therefore we do not have sufficient evidence to support the claim that I sleep more on weekends compared to weekdays.
+#The null hypothesis states that there is no difference but with the alternative hypothesis saying we get more sleep on the weekday than the weekend. Which it states that the p-value = 0.6557, so we would fail to reject the null hypothesis and that There is not enough evidence to conclude that the average hours of sleep on weekends are significantly greater than the average hours of sleep on weekdays at the 5% significance level. Therefore we do not have sufficient evidence to support the claim that I sleep more on weekends compared to weekdays.
 ```
 
